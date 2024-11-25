@@ -1,38 +1,167 @@
-.App {
+/* Default dark mode styles */
+body {
+  margin: 0;
+  padding: 0;
+  font-family: "Arial", sans-serif;
+  background-color: #1e1e2f;
+  color: #e4e4f5;
+}
+
+h1, h2 {
   text-align: center;
+  color: #b39ddb;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+h1.title {
+  margin-top: 20px;
+  font-size: 2.5rem;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.container {
   display: flex;
-  flex-direction: column;
-  align-items: center;
+  flex-wrap: wrap;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
+  gap: 20px;
+  padding: 20px;
+}
+
+.card {
+  background-color: #2a2a3b;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  padding: 20px;
+  max-width: 400px;
+  width: 100%;
+}
+
+textarea, select, input[type="text"], input[type="number"] {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  border: none;
+  border-radius: 4px;
+  background-color: #3c3c54;
+  color: #e4e4f5;
+}
+
+textarea::placeholder, input::placeholder {
+  color: #9a9aba;
+}
+
+textarea:focus, select:focus, input:focus {
+  outline: 2px solid #9575cd;
+}
+
+button {
+  background-color: #7e57c2;
+  border: none;
+  border-radius: 4px;
+  color: #fff;
+  font-size: 1rem;
+  padding: 10px 15px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+button:hover {
+  background-color: #673ab7;
+}
+
+button:active {
+  background-color: #5e35b1;
+}
+
+input[type="checkbox"] {
+  margin-right: 8px;
+}
+
+.checkbox label {
+  display: flex;
+  align-items: center;
+  font-size: 0.9rem;
+  color: #d1c4e9;
+}
+
+.list-display {
+  font-size: 0.9rem;
+  margin: 10px 0;
+}
+
+.controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+table {
+  width: 100%;
+  margin-top: 15px;
+  border-collapse: collapse;
+}
+
+table td {
+  padding: 8px;
+  border: 1px solid #444;
+}
+
+table td:first-child {
+  font-weight: bold;
+  color: #d1c4e9;
+}
+
+/* Light Mode Styles */
+body.light-mode {
+  background-color: #f4f4f4;
+  color: #333;
+}
+
+body.light-mode h1, body.light-mode h2 {
+  color: #6a1b9a;
+}
+
+body.light-mode .card {
+  background-color: #fff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+body.light-mode textarea, 
+body.light-mode select, 
+body.light-mode input[type="text"], 
+body.light-mode input[type="number"] {
+  background-color: #fff;
+  color: #333;
+  border: 1px solid #ccc;
+}
+
+body.light-mode button {
+  background-color: #6a1b9a;
   color: white;
 }
 
-.App-link {
-  color: #61dafb;
+body.light-mode button:hover {
+  background-color: #4a148c;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
+body.light-mode button:active {
+  background-color: #3d0a76;
+}
+
+body.light-mode .checkbox label {
+  color: #333;
+}
+
+body.light-mode .list-display {
+  color: #333;
+}
+
+body.light-mode table td {
+  border: 1px solid #ddd;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+  .container {
+    flex-direction: column;
+    align-items: center;
   }
 }
