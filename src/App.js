@@ -15,6 +15,16 @@ const App = () => {
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [complexities, setComplexities] = useState({ timeComplexity: "", spaceComplexity: "" });
 
+  const handleAlgorithmChange = (newAlgorithm) => {
+    setAlgorithm(newAlgorithm);
+  
+    // Reset searchKey and result when switching between algorithms
+    if (["Bubble Sort", "Merge Sort", "Quick Sort"].includes(newAlgorithm)) {
+      setSearchKey(null);
+    }
+    resetResults();
+  };
+  
   const generateList = () => {
     let generatedList;
     if (isOrdered) {
@@ -95,7 +105,7 @@ const App = () => {
         timeComplexity = "O(n)";
         spaceComplexity = "O(1)";
       } else if (algorithm === "Binary Search") {
-        const sortedList = quickSort(list).sortedArray; // Ensure the list is sorted
+        const sortedList = mergeSort(list).sortedArray; // Ensure the list is sorted
         startTime = performance.now();
         ({ index: output, comparisons } = binarySearch(sortedList, key));
         endTime = performance.now();
@@ -158,18 +168,21 @@ const App = () => {
 
         <div className="card">
           <h2>Algorithm Selection</h2>
-          <select value={algorithm} onChange={(e) => setAlgorithm(e.target.value)} className="select-algorithm">
-            <option value="">Select Algorithm</option>
-            <optgroup label="Sorting Algorithms">
-              <option value="Bubble Sort">Bubble Sort</option>
-              <option value="Merge Sort">Merge Sort</option>
-              <option value="Quick Sort">Quick Sort</option>
-            </optgroup>
-            <optgroup label="Searching Algorithms">
-              <option value="Linear Search">Linear Search</option>
-              <option value="Binary Search">Binary Search</option>
-            </optgroup>
-          </select>
+          <select
+          value={algorithm}
+          onChange={(e) => handleAlgorithmChange(e.target.value)}
+          className="select-algorithm">
+          <option value="">Select Algorithm</option>
+          <optgroup label="Sorting Algorithms">
+            <option value="Bubble Sort">Bubble Sort</option>
+            <option value="Merge Sort">Merge Sort</option>
+            <option value="Quick Sort">Quick Sort</option>
+          </optgroup>
+          <optgroup label="Searching Algorithms">
+            <option value="Linear Search">Linear Search</option>
+            <option value="Binary Search">Binary Search</option>
+          </optgroup>
+        </select>
           {["Linear Search", "Binary Search"].includes(algorithm) && (
             <input
               type="number"
