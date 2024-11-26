@@ -1,40 +1,27 @@
 import React, { useState, useEffect } from "react";
 import { bubbleSort, mergeSort, quickSort } from "./algorithms/sorting";
-import { linearSearch, binarySearch } from "./algorithms/searching";
 import "./App.css";
 
 const App = () => {
   const [list, setList] = useState([]);
   const [inputList, setInputList] = useState("");
   const [algorithm, setAlgorithm] = useState("");
-  const [searchKey, setSearchKey] = useState(null);
   const [result, setResult] = useState(null);
   const [stats, setStats] = useState({ time: 0, comparisons: 0 });
   const [listLength, setListLength] = useState(10);
-  const [isOrdered, setIsOrdered] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [complexities, setComplexities] = useState({ timeComplexity: "", spaceComplexity: "" });
 
   const handleAlgorithmChange = (newAlgorithm) => {
     setAlgorithm(newAlgorithm);
-  
-    // Reset searchKey and result when switching between algorithms
-    if (["Bubble Sort", "Merge Sort", "Quick Sort"].includes(newAlgorithm)) {
-      setSearchKey(null);
-    }
     resetResults();
   };
-  
+
   const generateList = () => {
-    let generatedList;
-    if (isOrdered) {
-      generatedList = Array.from({ length: listLength }, (_, i) => i + 1);
-    } else {
-      generatedList = Array.from({ length: listLength }, (_, i) => i + 1);
-      for (let i = generatedList.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [generatedList[i], generatedList[j]] = [generatedList[j], generatedList[i]];
-      }
+    const generatedList = Array.from({ length: listLength }, (_, i) => i + 1);
+    for (let i = generatedList.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [generatedList[i], generatedList[j]] = [generatedList[j], generatedList[i]];
     }
     setList(generatedList);
     resetResults();
@@ -94,24 +81,6 @@ const App = () => {
         spaceComplexity = "O(log n)";
       }
       output = sorted;
-    } else if (["Linear Search", "Binary Search"].includes(algorithm)) {
-      if (searchKey === null || searchKey === "") return alert("Please enter a search key!");
-      const key = parseInt(searchKey, 10);
-
-      if (algorithm === "Linear Search") {
-        startTime = performance.now();
-        ({ index: output, comparisons } = linearSearch(list, key));
-        endTime = performance.now();
-        timeComplexity = "O(n)";
-        spaceComplexity = "O(1)";
-      } else if (algorithm === "Binary Search") {
-        const sortedList = mergeSort(list).sortedArray; // Ensure the list is sorted
-        startTime = performance.now();
-        ({ index: output, comparisons } = binarySearch(sortedList, key));
-        endTime = performance.now();
-        timeComplexity = "O(log n)";
-        spaceComplexity = "O(1)";
-      }
     }
 
     setStats({ time: (endTime - startTime).toFixed(4), comparisons });
@@ -151,16 +120,6 @@ const App = () => {
             />
             <button onClick={generateList} className="btn-generate">Generate</button>
           </div>
-          <div className="checkbox">
-            <label>
-              <input
-                type="checkbox"
-                checked={isOrdered}
-                onChange={() => setIsOrdered(!isOrdered)}
-              />
-              Generate ordered list
-            </label>
-          </div>
           <p className="list-display">
             <strong>Current List:</strong> {list.length > 0 ? truncateListDisplay(list) : "No list generated yet."}
           </p>
@@ -169,28 +128,17 @@ const App = () => {
         <div className="card">
           <h2>Algorithm Selection</h2>
           <select
-          value={algorithm}
-          onChange={(e) => handleAlgorithmChange(e.target.value)}
-          className="select-algorithm">
-          <option value="">Select Algorithm</option>
-          <optgroup label="Sorting Algorithms">
-            <option value="Bubble Sort">Bubble Sort</option>
-            <option value="Merge Sort">Merge Sort</option>
-            <option value="Quick Sort">Quick Sort</option>
-          </optgroup>
-          <optgroup label="Searching Algorithms">
-            <option value="Linear Search">Linear Search</option>
-            <option value="Binary Search">Binary Search</option>
-          </optgroup>
-        </select>
-          {["Linear Search", "Binary Search"].includes(algorithm) && (
-            <input
-              type="number"
-              placeholder="Enter search key"
-              onChange={(e) => setSearchKey(e.target.value)}
-              className="input-search-key"
-            />
-          )}
+            value={algorithm}
+            onChange={(e) => handleAlgorithmChange(e.target.value)}
+            className="select-algorithm"
+          >
+            <option value="">Select Algorithm</option>
+            <optgroup label="Sorting Algorithms">
+              <option value="Bubble Sort">Bubble Sort</option>
+              <option value="Merge Sort">Merge Sort</option>
+              <option value="Quick Sort">Quick Sort</option>
+            </optgroup>
+          </select>
           <button onClick={handleExecute} className="btn-execute">Run Algorithm</button>
         </div>
 
@@ -200,11 +148,7 @@ const App = () => {
             <div>
               <p>
                 <strong>
-                  {["Bubble Sort", "Merge Sort", "Quick Sort"].includes(algorithm)
-                    ? `Sorted List: ${result.join(", ")}`
-                    : result !== -1
-                    ? `Key found at index: ${result}`
-                    : "Key not found"}
+                  Sorted List: {result.join(", ")}
                 </strong>
               </p>
               <table>
